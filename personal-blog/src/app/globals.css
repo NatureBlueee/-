@@ -1,0 +1,141 @@
+/**
+ * 全局样式
+ *
+ * 定义 CSS 变量和基础重置
+ * 主题配置来自 config/theme.ts
+ */
+
+:root {
+  /* 颜色系统 - 宣纸白 + 墨汁色 */
+  --color-background: #F5F5F3;
+  --color-background-secondary: #EDEDE9;
+  --color-text: #2B2B2B;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-accent: #B03A2E;
+  --color-accent-hover: #922D24;
+  --color-border: #E0E0DC;
+  --color-divider: #E8E8E4;
+
+  /* 字体系统 */
+  --font-serif: var(--font-serif, 'Noto Serif SC', 'Songti SC', serif);
+  --font-mono: var(--font-mono, 'JetBrains Mono', 'Fira Code', monospace);
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* 字号 */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  /* 行高 */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  --line-height-reading: 1.8;
+
+  /* 间距 */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+
+  /* 最大宽度 */
+  --max-width-article: 680px;
+  --max-width-content: 800px;
+  --max-width-container: 1200px;
+
+  /* 圆角 */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* 过渡 */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* 深色模式 - Phase 2 实现 */
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #1A1A1A;
+    --color-background-secondary: #242424;
+    --color-text: #E8E8E4;
+    --color-text-secondary: #A0A0A0;
+    --color-text-tertiary: #707070;
+    --color-accent: #D4544A;
+    --color-accent-hover: #E06B62;
+    --color-border: #333333;
+    --color-divider: #2A2A2A;
+  }
+} */
+
+/* 基础重置 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+/* 链接样式 */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* 代码样式 */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* 图片响应式 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 按钮重置 */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* 列表重置 */
+ul, ol {
+  list-style: none;
+}

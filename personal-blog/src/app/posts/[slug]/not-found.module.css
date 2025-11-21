@@ -1,0 +1,42 @@
+/**
+ * 404 页面样式
+ */
+
+.container {
+  max-width: var(--max-width-article, 680px);
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--spacing-3xl, 4rem) var(--spacing-md, 1rem);
+}
+
+.title {
+  font-size: 6rem;
+  font-weight: 700;
+  color: var(--color-text-tertiary, #999);
+  margin-bottom: var(--spacing-md, 1rem);
+}
+
+.message {
+  font-size: var(--font-size-2xl, 1.5rem);
+  color: var(--color-text, #2b2b2b);
+  margin-bottom: var(--spacing-sm, 0.5rem);
+}
+
+.hint {
+  font-size: var(--font-size-base, 1rem);
+  color: var(--color-text-secondary, #666);
+  margin-bottom: var(--spacing-xl, 2rem);
+}
+
+.link {
+  display: inline-block;
+  padding: var(--spacing-sm, 0.5rem) var(--spacing-lg, 1.5rem);
+  border: 1px solid var(--color-border, #e0e0dc);
+  color: var(--color-text, #2b2b2b);
+  text-decoration: none;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.link:hover {
+  background: var(--color-background-secondary, #edede9);
+}
