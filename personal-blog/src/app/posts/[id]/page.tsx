@@ -1,14 +1,19 @@
 /**
  * 文章详情页
  *
- * 展示单篇文章的完整内容
+ * 职责：数据获取、元数据生成、静态路径生成
+ * 渲染：委托给 ArticleDetail 组件
+ *
+ * 架构原则：
+ * - 页面只负责数据层和 Next.js 特性（metadata, generateStaticParams）
+ * - UI 渲染由组件负责，便于独立修改视觉层
  */
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getArticleById, getAllArticleIds } from '@/services';
+import { ArticleDetail } from '@/components/article';
 import { siteConfig } from '@/config/site';
-import styles from './page.module.css';
 
 interface ArticlePageProps {
   params: Promise<{ id: string }>;
@@ -22,7 +27,7 @@ export async function generateStaticParams() {
     const ids = await getAllArticleIds();
     return ids.map((id) => ({ id }));
   } catch (error) {
-    console.warn('generateStaticParams: API unavailable', error);
+    console.warn('[Page] generateStaticParams failed:', error);
     return [];
   }
 }
@@ -42,7 +47,7 @@ export async function generateMetadata({
 
   return {
     title: article.title,
-    description: article.excerpt,
+    description: article.excerpt || `${article.title} - ${siteConfig.author.name}`,
     openGraph: {
       title: article.title,
       description: article.excerpt,
@@ -54,6 +59,9 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * 页面组件
+ */
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { id } = await params;
   const article = await getArticleById(id);
@@ -62,39 +70,5 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  return (
-    <article className={styles.article}>
-      {/* 文章头部 */}
-      <header className={styles.header}>
-        <span className={styles.category}>{article.category}</span>
-        <h1 className={styles.title}>{article.title}</h1>
-        {article.titleEn && (
-          <p className={styles.titleEn}>{article.titleEn}</p>
-        )}
-        <time className={styles.date} dateTime={article.publishedAt}>
-          {article.publishedAt}
-        </time>
-      </header>
-
-      {/* 封面图片 */}
-      {article.cover && (
-        <div className={styles.cover}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={article.cover}
-            alt={article.title}
-            className={styles.coverImage}
-          />
-        </div>
-      )}
-
-      {/* 文章正文 */}
-      <div
-        className={styles.content}
-        dangerouslySetInnerHTML={{
-          __html: article.content?.replace(/\n/g, '<br />') || '',
-        }}
-      />
-    </article>
-  );
+  return <ArticleDetail article={article} />;
 }

@@ -6,9 +6,8 @@
 export { Layout, Header, Footer } from './Layout';
 export type { LayoutProps, HeaderProps, FooterProps } from './Layout';
 
-// 通用组件
-export { Loading } from './common/Loading';
-export type { LoadingProps } from './common/Loading';
+// 文章组件
+export { ArticleDetail, ArticleHeader, ArticleContent } from './article';
 
 // 屏幕组件
 export { SurfaceScreen } from './screens/SurfaceScreen';
@@ -19,3 +18,7 @@ export { GroundScreen } from './screens/GroundScreen';
 export { GrainTexture } from './common/GrainTexture';
 export { CustomCursor } from './common/CustomCursor';
 export { SmokeFilters } from './common/SmokeFilters';
+
+// 通用组件
+export { Loading } from './common/Loading';
+export type { LoadingProps } from './common/Loading';
