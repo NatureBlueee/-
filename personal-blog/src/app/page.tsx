@@ -1,34 +1,41 @@
 /**
- * 首页
+ * 首页 - 双屏布局
  *
- * 展示最新文章和站点介绍
+ * 第一屏：表世界（理性）
+ * 第二屏：里世界（感性）
  */
 
-import { getRecentArticles } from '@/services';
-import { ArticleList } from '@/components/ArticleList';
-import { siteConfig } from '@/config/site';
-import styles from './page.module.css';
+import { getArticlesByCategory } from '@/services/notion';
+import { SurfaceScreen } from '@/components/screens/SurfaceScreen';
+import { InnerScreen } from '@/components/screens/InnerScreen';
+import { CustomCursor } from '@/components/common/CustomCursor';
+import { GrainTexture } from '@/components/common/GrainTexture';
+import { SmokeFilters } from '@/components/common/SmokeFilters';
 
 export default async function HomePage() {
-  // 从 Crossbell 获取最新文章
-  const articles = await getRecentArticles(5);
+  // 从 Notion 获取文章（按类型分类）
+  const [rationalArticles, emotionalArticles] = await Promise.all([
+    getArticlesByCategory('理性'),
+    getArticlesByCategory('感性'),
+  ]);
 
   return (
-    <div className={styles.container}>
-      {/* 站点介绍 */}
-      <section className={styles.hero}>
-        <h1 className={styles.title}>{siteConfig.name}</h1>
-        <p className={styles.description}>{siteConfig.description}</p>
-      </section>
+    <>
+      {/* SVG Filters for Smoke Effects */}
+      <SmokeFilters />
 
-      {/* 最新文章 */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>最新文章</h2>
-        <ArticleList
-          articles={articles}
-          emptyMessage="还没有文章，去 xLog 写点什么吧"
-        />
-      </section>
-    </div>
+      {/* 全局效果 */}
+      <GrainTexture />
+      <CustomCursor />
+
+      {/* 双屏滚动容器 */}
+      <div className="snap-container">
+        {/* 第一屏：表世界 (理性) */}
+        <SurfaceScreen articles={rationalArticles} />
+
+        {/* 第二屏：里世界 (感性) */}
+        <InnerScreen articles={emotionalArticles} />
+      </div>
+    </>
   );
 }
