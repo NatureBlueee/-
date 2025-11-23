@@ -3,5 +3,6 @@
  */
 
 export { ArticleDetail } from './ArticleDetail';
-export { ArticleHeader } from './ArticleHeader';
 export { ArticleContent } from './ArticleContent';
+export { MysticalWatermark } from './MysticalWatermark';
+export { NatureSeal } from './NatureSeal';

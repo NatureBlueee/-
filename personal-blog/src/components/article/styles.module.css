@@ -1,121 +1,54 @@
 /**
  * 文章详情样式
  *
- * 设计理念：
- * - 宋代美学：简约、留白、层次分明
- * - 瑞士国际风格：清晰的排版、功能性优先
- * - 舒适的阅读体验
+ * 设计理念：温润、沉浸、干净但有内核
  */
 
 /* === 文章容器 === */
 .article {
-  min-height: 100vh;
-  background-color: var(--xuan-paper);
-  position: relative;
-}
-
-/* 理性文章 - 保持宣纸白 */
-.article[data-category="理性"] {
-  background-color: var(--xuan-paper);
-}
-
-/* 感性文章 - 鸦青背景 */
-.article[data-category="感性"] {
-  background-color: var(--crow-feather);
-}
-
-.article[data-category="感性"] .header,
-.article[data-category="感性"] .content,
-.article[data-category="感性"] .footer {
-  color: var(--xuan-paper);
-}
-
-/* 背景装饰 */
-.decoration {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 200px;
-  background: linear-gradient(
-    to bottom,
-    rgba(204, 40, 28, 0.03) 0%,
-    transparent 100%
-  );
-  pointer-events: none;
-}
-
-/* 内容容器 */
-.container {
-  max-width: 680px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 80px 24px 120px;
+  padding: 100px 24px 120px;
   position: relative;
 }
 
 /* === 文章头部 === */
 .header {
-  margin-bottom: 48px;
+  margin-bottom: 64px;
   text-align: center;
 }
 
-/* 分类标签 */
-.category {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cinnabar);
-  padding: 4px 12px;
-  border: 1px solid var(--cinnabar);
-  margin-bottom: 24px;
-}
-
-/* 主标题 */
 .title {
   font-family: var(--font-serif);
-  font-size: clamp(28px, 5vw, 36px);
+  font-size: clamp(26px, 5vw, 34px);
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0 0 16px;
-  color: var(--ink-main);
+  color: var(--page-text);
+  letter-spacing: 0.02em;
 }
 
-.article[data-category="感性"] .title {
-  color: var(--xuan-paper);
-}
-
-/* 英文标题 */
 .titleEn {
   font-family: var(--font-mono);
   font-size: 14px;
   font-weight: 300;
-  color: var(--ink-light);
+  color: var(--page-text-light);
   margin: 0 0 24px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
 }
 
-.article[data-category="感性"] .titleEn {
-  color: rgba(245, 241, 235, 0.6);
-}
-
-/* 日期 */
 .date {
   font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--ink-lighter);
-  letter-spacing: 0.1em;
-}
-
-.article[data-category="感性"] .date {
-  color: rgba(245, 241, 235, 0.5);
+  font-size: 12px;
+  color: var(--page-text-lighter);
+  letter-spacing: 0.15em;
 }
 
 /* === 封面图片 === */
 .cover {
-  margin: 0 -24px 48px;
-  overflow: hidden;
+  margin: 0 0 56px;
+  position: relative;
 }
 
 .coverImage {
@@ -129,37 +62,41 @@
   font-family: var(--font-serif);
   font-size: 17px;
   line-height: 1.9;
-  color: var(--ink-main);
+  color: var(--page-text);
 }
 
+/* 段落 */
 .content p {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.6em;
 }
 
+/* 标题 */
 .content h1,
 .content h2,
 .content h3 {
   font-weight: 500;
-  line-height: 1.3;
-  margin-top: 2em;
-  margin-bottom: 0.8em;
+  line-height: 1.4;
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+  color: var(--page-text);
 }
 
 .content h1 {
-  font-size: 1.5em;
+  font-size: 1.4em;
 }
 
 .content h2 {
-  font-size: 1.3em;
+  font-size: 1.25em;
 }
 
 .content h3 {
   font-size: 1.1em;
 }
 
+/* 列表 */
 .content ul,
 .content ol {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.6em;
   padding-left: 1.5em;
 }
 
@@ -167,35 +104,41 @@
   margin-bottom: 0.5em;
 }
 
+/* 引用 - 温润的左边线 */
 .content blockquote {
-  border-left: 3px solid var(--cinnabar);
-  padding-left: 1em;
-  margin: 1.5em 0;
-  color: var(--ink-light);
-  font-style: italic;
+  border-left: 2px solid var(--page-accent);
+  padding-left: 1.2em;
+  margin: 2em 0;
+  color: var(--page-text-light);
+  font-style: normal;
 }
 
+/* 代码块 */
 .content pre {
-  background-color: var(--bg-secondary);
-  padding: 16px 20px;
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 20px 24px;
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: 14px;
-  line-height: 1.6;
-  margin: 1.5em 0;
-  border-radius: 4px;
+  line-height: 1.7;
+  margin: 2em 0;
+  border-radius: 2px;
 }
 
-.article[data-category="感性"] .content pre {
-  background-color: rgba(0, 0, 0, 0.3);
+[data-theme="inner"] .content pre {
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
 .content code {
   font-family: var(--font-mono);
   font-size: 0.9em;
-  background-color: var(--bg-secondary);
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.04);
+  padding: 0.15em 0.4em;
+  border-radius: 2px;
+}
+
+[data-theme="inner"] .content code {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .content pre code {
@@ -203,23 +146,28 @@
   padding: 0;
 }
 
+/* 分隔线 */
 .content hr {
   border: none;
-  border-top: 1px solid var(--ink-lighter);
+  height: 1px;
+  background-color: var(--page-text-lighter);
   margin: 3em 0;
-  opacity: 0.3;
+  opacity: 0.2;
 }
 
+/* 链接 */
 .content a {
-  color: var(--cinnabar);
+  color: var(--page-accent);
   text-decoration: none;
-  border-bottom: 1px solid currentColor;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
 }
 
 .content a:hover {
-  opacity: 0.8;
+  border-bottom-color: currentColor;
 }
 
+/* 强调 */
 .content strong {
   font-weight: 600;
 }
@@ -228,46 +176,122 @@
   font-style: italic;
 }
 
+/* === 图片处理 === */
+.content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2em auto;
+}
+
+/* 宽图片 - 突破容器 */
+.content figure {
+  margin: 2.5em -24px;
+}
+
+.content figure img {
+  width: 100%;
+  margin: 0;
+}
+
+.content figcaption {
+  font-size: 13px;
+  color: var(--page-text-lighter);
+  text-align: center;
+  margin-top: 12px;
+  padding: 0 24px;
+}
+
 /* === 文章底部 === */
 .footer {
   margin-top: 80px;
+  padding-top: 40px;
   text-align: center;
-}
-
-.divider {
-  width: 60px;
-  height: 1px;
-  background: var(--ink-lighter);
-  margin: 0 auto 24px;
-  opacity: 0.3;
 }
 
 .endMark {
   font-family: var(--font-serif);
   font-size: 14px;
-  color: var(--ink-lighter);
+  color: var(--page-text-lighter);
   letter-spacing: 0.5em;
+  margin-bottom: 48px;
+  opacity: 0.6;
 }
 
-.article[data-category="感性"] .endMark {
-  color: rgba(245, 241, 235, 0.4);
+/* === 神秘水印 === */
+.watermark {
+  position: fixed;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.watermarkSvg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  color: var(--page-text);
+}
+
+.watermarkSvg[data-theme="inner"] {
+  opacity: 0.04;
+}
+
+/* === 私印 Nature === */
+.seal {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  color: var(--page-accent);
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.seal:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.sealSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.sealText {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  fill: currentColor;
+  letter-spacing: 0.05em;
 }
 
 /* === 响应式 === */
 @media (max-width: 768px) {
-  .container {
+  .article {
     padding: 60px 20px 80px;
   }
 
   .header {
-    margin-bottom: 36px;
+    margin-bottom: 48px;
   }
 
   .content {
     font-size: 16px;
   }
 
-  .cover {
-    margin: 0 -20px 36px;
+  .content figure {
+    margin: 2em -20px;
+  }
+
+  .watermark {
+    width: 80px;
+    height: 80px;
+  }
+
+  .seal {
+    width: 56px;
+    height: 56px;
   }
 }

@@ -376,3 +376,56 @@ body.hovering .custom-cursor {
   .md\:flex { display: flex; }
   .md\:hidden { display: none; }
 }
+
+/* ============================================
+   文章详情页主题系统
+   ============================================ */
+
+/* 文章页容器 - 允许滚动 */
+.article-page {
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 表世界主题（默认） */
+.article-page[data-theme="surface"] {
+  --page-bg: #F5F1EB;
+  --page-text: #2C2C2C;
+  --page-text-light: #6B6B6B;
+  --page-text-lighter: #999999;
+  --page-accent: var(--cinnabar);
+  background-color: var(--page-bg);
+  color: var(--page-text);
+}
+
+/* 里世界主题 */
+.article-page[data-theme="inner"] {
+  --page-bg: #1E2428;
+  --page-text: #E8E4DC;
+  --page-text-light: #A8A8A8;
+  --page-text-lighter: #707070;
+  --page-accent: var(--gold-dust);
+  background-color: var(--page-bg);
+  color: var(--page-text);
+}
+
+/* 文章页光标 - 使用主题变量 */
+.article-page .custom-cursor {
+  border-color: var(--page-accent);
+}
+
+.article-page.hovering .custom-cursor {
+  border-color: var(--page-accent);
+  background-color: rgba(204, 40, 28, 0.1);
+}
+
+.article-page[data-theme="inner"].hovering .custom-cursor {
+  background-color: rgba(191, 163, 124, 0.15);
+}
+
+/* 文章页纹理 - 更淡 */
+.article-page .grain-texture {
+  opacity: 0.025;
+}

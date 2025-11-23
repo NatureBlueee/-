@@ -7,7 +7,7 @@ export { Layout, Header, Footer } from './Layout';
 export type { LayoutProps, HeaderProps, FooterProps } from './Layout';
 
 // 文章组件
-export { ArticleDetail, ArticleHeader, ArticleContent } from './article';
+export { ArticleDetail, ArticleContent } from './article';
 
 // 屏幕组件
 export { SurfaceScreen } from './screens/SurfaceScreen';
