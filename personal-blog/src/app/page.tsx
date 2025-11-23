@@ -8,6 +8,7 @@
 import { getArticlesByCategory } from '@/services/notion';
 import { SurfaceScreen } from '@/components/screens/SurfaceScreen';
 import { InnerScreen } from '@/components/screens/InnerScreen';
+import { GroundScreen } from '@/components/screens/GroundScreen';
 import { CustomCursor } from '@/components/common/CustomCursor';
 import { GrainTexture } from '@/components/common/GrainTexture';
 import { SmokeFilters } from '@/components/common/SmokeFilters';
@@ -35,6 +36,9 @@ export default async function HomePage() {
 
         {/* 第二屏：里世界 (感性) */}
         <InnerScreen articles={emotionalArticles} />
+
+        {/* 第三屏：地界 (坛城) */}
+        <GroundScreen />
       </div>
     </>
   );

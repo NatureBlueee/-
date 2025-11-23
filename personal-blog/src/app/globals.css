@@ -24,6 +24,10 @@
   /* 字体 */
   --font-serif: 'Noto Serif SC', 'Songti SC', serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* 新增变量 */
+  --bg-silk: #E6E4D5;
+  --gold-mud: #C5A059;
 }
 
 /* === 基础重置 === */
@@ -107,6 +111,46 @@ body.hovering .custom-cursor {
 .screen-inner {
   background-color: var(--bg-night);
   color: var(--text-moon);
+}
+
+/* 地界 (坛城) */
+.screen-ground {
+  background-color: var(--bg-silk);
+  color: var(--ink-main);
+  position: relative;
+}
+
+.silk-texture {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* 铁线描效果 */
+.iron-wire-line {
+  stroke: var(--ink-sub);
+  stroke-width: 1px;
+  fill: none;
+  opacity: 0.15;
+  vector-effect: non-scaling-stroke;
+}
+
+/* 金缮效果 */
+.kintsugi-line {
+  stroke: var(--gold-mud);
+  stroke-width: 1.5px;
+  fill: none;
+  filter: drop-shadow(0 0 2px rgba(197, 160, 89, 0.4));
+}
+
+/* 竖排文字 */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.2em;
 }
 
 /* === 布局系统 === */

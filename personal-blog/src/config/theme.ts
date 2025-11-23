@@ -25,6 +25,16 @@ export const themeConfig = {
     border: '#E0E0DC',
     /** 分割线 */
     divider: '#E8E8E4',
+    /** 老绢 - 泛黄的丝绸底色 (第三屏背景) */
+    silk: '#E6E4D5',
+    /** 深绢 - 用于纹理 */
+    silkDark: '#D4D2C5',
+    /** 定窑白 - 象牙白 (备用) */
+    dingWhite: '#F2F1E8',
+    /** 影青 - 雨过天青 (第四屏备用) */
+    shadowBlue: '#C8D5DB',
+    /** 金泥 - 用于修复/点缀 */
+    goldMud: '#C5A059',
   },
 
   /** 深色模式配色 - 预留结构，Phase 2 实现 */
