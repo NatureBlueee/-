@@ -58,6 +58,4 @@ export interface Author {
   name: string;
   bio?: string;
   avatar?: string;
-  /** Crossbell Character ID */
-  characterId: string;
 }

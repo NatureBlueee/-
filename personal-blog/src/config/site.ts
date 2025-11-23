@@ -17,7 +17,6 @@ export const siteConfig = {
   /** 作者信息 */
   author: {
     name: 'Natureblueee',
-    /** xLog/Crossbell 用户名 */
     handle: 'Natureblueee',
   },
 

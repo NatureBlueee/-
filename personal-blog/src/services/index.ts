@@ -1,13 +1,13 @@
 /**
  * 服务层统一导出
  *
- * 使用方式：
- * import { getArticles, getArticleBySlug } from '@/services';
+ * 数据源：Notion Database
  */
 
 export {
   getArticles,
-  getArticleBySlug,
-  getAllArticleSlugs,
-  getRecentArticles,
-} from './crossbell';
+  getArticlesByCategory,
+  getArticleById,
+  getAllArticleIds,
+  type Article,
+} from './notion';

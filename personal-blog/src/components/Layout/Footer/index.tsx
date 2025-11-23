@@ -1,8 +1,7 @@
 /**
- * Footer 组件 - 占位符实现
+ * Footer 组件
  *
  * 职责：网站底部信息
- * 状态：占位符，基础结构
  */
 
 import { siteConfig } from '@/config/site';
@@ -19,16 +18,7 @@ export function Footer({ className = '' }: FooterProps) {
           &copy; {currentYear} {siteConfig.author.name}
         </p>
         <p className={styles.powered}>
-          内容永久存储于{' '}
-          <a
-            href="https://crossbell.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.link}
-          >
-            Crossbell
-          </a>
-          {' '}区块链
+          内容管理：Notion
         </p>
       </div>
     </footer>

@@ -1,12 +1,12 @@
 /**
  * 文章列表页
  *
- * 展示所有文章，支持分页
+ * 展示所有已发布的文章
  */
 
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { getArticles } from '@/services';
-import { ArticleList } from '@/components/ArticleList';
 import { siteConfig } from '@/config/site';
 import styles from './page.module.css';
 
@@ -15,34 +15,36 @@ export const metadata: Metadata = {
   description: `${siteConfig.author.name} 的文章列表`,
 };
 
-interface PostsPageProps {
-  searchParams: Promise<{ page?: string }>;
-}
-
-export default async function PostsPage({ searchParams }: PostsPageProps) {
-  const params = await searchParams;
-  const currentPage = Number(params.page) || 1;
-
-  // 从 Crossbell 获取文章列表
-  const { articles, pagination } = await getArticles({
-    page: currentPage,
-    pageSize: siteConfig.postsPerPage,
-  });
+export default async function PostsPage() {
+  const articles = await getArticles();
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>文章</h1>
         <p className={styles.subtitle}>
-          所有文章均永久存储于 Crossbell 区块链
+          所有文章均存储于 Notion，按发布日期排序
         </p>
       </header>
 
-      <ArticleList
-        articles={articles}
-        pagination={pagination}
-        emptyMessage="还没有文章，去 xLog 写点什么吧"
-      />
+      {articles.length === 0 ? (
+        <p className={styles.empty}>还没有已发布的文章</p>
+      ) : (
+        <ul className={styles.list}>
+          {articles.map((article) => (
+            <li key={article.id} className={styles.item}>
+              <Link href={`/posts/${article.id}`} className={styles.link}>
+                <span className={styles.category}>{article.category}</span>
+                <h2 className={styles.articleTitle}>{article.title}</h2>
+                {article.titleEn && (
+                  <p className={styles.titleEn}>{article.titleEn}</p>
+                )}
+                <time className={styles.date}>{article.publishedAt}</time>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
