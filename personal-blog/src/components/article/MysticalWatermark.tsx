@@ -7,7 +7,7 @@
 
 'use client';
 
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 
 interface MysticalWatermarkProps {
@@ -50,17 +50,19 @@ const SYMBOLS = {
 const SYMBOL_KEYS = Object.keys(SYMBOLS) as (keyof typeof SYMBOLS)[];
 
 export function MysticalWatermark({ theme }: MysticalWatermarkProps) {
-  // 根据某种规则选择符号（这里用随机，但可以根据日期、文章ID等）
-  const symbolKey = useMemo(() => {
-    const index = Math.floor(Math.random() * SYMBOL_KEYS.length);
-    return SYMBOL_KEYS[index] ?? 'sol';
-  }, []);
+  // 使用 useState 和 useEffect 确保只在客户端生成随机值，避免 hydration mismatch
+  const [symbolKey, setSymbolKey] = useState<keyof typeof SYMBOLS>('sol');
+  const [position, setPosition] = useState({ bottom: 17.5, right: 10 });
 
-  // 随机位置（右下角区域）
-  const position = useMemo(() => ({
-    bottom: 10 + Math.random() * 15,
-    right: 5 + Math.random() * 10,
-  }), []);
+  useEffect(() => {
+    // 只在客户端挂载后生成随机值
+    const index = Math.floor(Math.random() * SYMBOL_KEYS.length);
+    setSymbolKey(SYMBOL_KEYS[index] ?? 'sol');
+    setPosition({
+      bottom: 10 + Math.random() * 15,
+      right: 5 + Math.random() * 10,
+    });
+  }, []);
 
   const path = SYMBOLS[symbolKey];
 

@@ -6,40 +6,48 @@
 
 :root {
   /* === 表世界：宋色谱系 === */
-  --bg-paper: #F9F9F9;
+  --bg-paper: #f9f9f9;
   --ink-main: #111111;
   --ink-sub: #666666;
   --border-line: rgba(0, 0, 0, 0.06);
-  --cinnabar: #CC281C;
+  --cinnabar: #cc281c;
 
   /* === 里世界：鸦青 & 月白 === */
-  --bg-night: #1A1C1E;
-  --text-moon: #D6ECF0;
-  --gold-dust: #BFA37C;
+  --bg-night: #1a1c1e;
+  --text-moon: #d6ecf0;
+  --gold-dust: #bfa37c;
 
   /* === 布局变量 === */
   --void-width: 68%;
   --content-width: 32%;
 
   /* 字体 */
-  --font-serif: 'Noto Serif SC', 'Songti SC', serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-serif: "Noto Serif SC", "Songti SC", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   /* 新增变量 */
-  --bg-silk: #E6E4D5;
-  --gold-mud: #C5A059;
+  --bg-silk: #e6e4d5;
+  --gold-mud: #c5a059;
 }
 
 /* === 基础重置 === */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html {
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
+  scroll-behavior: smooth;
+}
+
+body {
+  height: 100%;
+  overflow: visible;
 }
 
 body {
@@ -72,10 +80,12 @@ body {
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+  transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease,
+    border-color 0.3s ease, opacity 0.3s ease;
   opacity: 0.9;
   /* 朱砂红光标 - 在任何背景下都可见 */
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 body.hovering .custom-cursor {
@@ -90,7 +100,6 @@ body.hovering .custom-cursor {
 .snap-container {
   height: 100vh;
   overflow-y: scroll;
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
@@ -98,7 +107,6 @@ body.hovering .custom-cursor {
 .screen {
   height: 100vh;
   width: 100vw;
-  scroll-snap-align: start;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -262,7 +270,11 @@ body.hovering .custom-cursor {
   left: 15%;
   width: 200px;
   height: 120%;
-  background: radial-gradient(ellipse at 50% 100%, rgba(230, 232, 235, 0.08), transparent 70%);
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(230, 232, 235, 0.08),
+    transparent 70%
+  );
   filter: url(#smoke-subtle);
   opacity: 0.8;
   transform-origin: bottom center;
@@ -304,20 +316,30 @@ body.hovering .custom-cursor {
   bottom: 0;
   left: 50%;
   width: 2px;
-  background: linear-gradient(to bottom,
+  background: linear-gradient(
+    to bottom,
     transparent 0%,
     rgba(230, 232, 235, 0.5) 20%,
     rgba(230, 232, 235, 0.2) 80%,
-    transparent 100%);
+    transparent 100%
+  );
   opacity: 0.7;
   filter: url(#smoke-line-flow);
 }
 
 /* === Drift Layout（乱中有序） === */
-.drift-layout .article-item:nth-child(1) { margin-left: 0; }
-.drift-layout .article-item:nth-child(2) { margin-left: 2rem; }
-.drift-layout .article-item:nth-child(3) { margin-left: 0.5rem; }
-.drift-layout .article-item:nth-child(4) { margin-left: 3rem; }
+.drift-layout .article-item:nth-child(1) {
+  margin-left: 0;
+}
+.drift-layout .article-item:nth-child(2) {
+  margin-left: 2rem;
+}
+.drift-layout .article-item:nth-child(3) {
+  margin-left: 0.5rem;
+}
+.drift-layout .article-item:nth-child(4) {
+  margin-left: 3rem;
+}
 
 /* === 工具类 === */
 .font-mono {
@@ -372,9 +394,15 @@ body.hovering .custom-cursor {
 }
 
 @media (min-width: 768px) {
-  .md\:block { display: block; }
-  .md\:flex { display: flex; }
-  .md\:hidden { display: none; }
+  .md\:block {
+    display: block;
+  }
+  .md\:flex {
+    display: flex;
+  }
+  .md\:hidden {
+    display: none;
+  }
 }
 
 /* ============================================
@@ -393,9 +421,9 @@ body.hovering .custom-cursor {
 
 /* 表世界主题（默认） */
 .article-page[data-theme="surface"] {
-  --page-bg: #F5F1EB;
-  --page-text: #2C2C2C;
-  --page-text-light: #6B6B6B;
+  --page-bg: #f5f1eb;
+  --page-text: #2c2c2c;
+  --page-text-light: #6b6b6b;
   --page-text-lighter: #999999;
   --page-accent: var(--cinnabar);
   background-color: var(--page-bg);
@@ -404,9 +432,9 @@ body.hovering .custom-cursor {
 
 /* 里世界主题 */
 .article-page[data-theme="inner"] {
-  --page-bg: #1E2428;
-  --page-text: #E8E4DC;
-  --page-text-light: #A8A8A8;
+  --page-bg: #1e2428;
+  --page-text: #e8e4dc;
+  --page-text-light: #a8a8a8;
   --page-text-lighter: #707070;
   --page-accent: var(--gold-dust);
   background-color: var(--page-bg);
