@@ -3,8 +3,6 @@
  *
  * 关键词：水墨晕染、纠缠、双生
  * 表达"二元对立与统一" —— 双蛇仗 (Caduceus)
- *
- * 这是"关于我"页面，需要短平快传递信息
  */
 
 'use client';
@@ -113,19 +111,19 @@ export function VariantEcho() {
           height: '100%',
         }}
       >
-        {/* 上虚影：创造 */}
+        {/* 上虚影 */}
         <motion.div
           animate={{
             y: [-8, 8, -8],
-            opacity: [0.12, 0.2, 0.12],
+            opacity: [0.15, 0.25, 0.15],
             filter: ["blur(3px)", "blur(1.5px)", "blur(3px)"]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           style={{
             position: 'absolute',
-            top: '20%',
+            top: '18%',
             fontFamily: 'var(--font-serif)',
-            fontSize: '42px',
+            fontSize: '48px',
             color: '#555',
             mixBlendMode: 'multiply',
             userSelect: 'none',
@@ -134,19 +132,19 @@ export function VariantEcho() {
           创造
         </motion.div>
 
-        {/* 下虚影：创造 */}
+        {/* 下虚影 */}
         <motion.div
           animate={{
             y: [8, -8, 8],
-            opacity: [0.12, 0.2, 0.12],
+            opacity: [0.15, 0.25, 0.15],
             filter: ["blur(3px)", "blur(1.5px)", "blur(3px)"]
           }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
           style={{
             position: 'absolute',
-            bottom: '20%',
+            bottom: '18%',
             fontFamily: 'var(--font-serif)',
-            fontSize: '42px',
+            fontSize: '48px',
             color: '#555',
             mixBlendMode: 'multiply',
             userSelect: 'none',
@@ -163,7 +161,7 @@ export function VariantEcho() {
             transition={{ duration: 1.5, ease: "easeOut" }}
             style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: '100px',
+              fontSize: '120px',
               lineHeight: 1,
               fontWeight: 300,
               color: '#111',
@@ -223,11 +221,8 @@ export function VariantEcho() {
           </svg>
         </div>
 
-        {/* === 信息层：顶部 - 身份 === */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+        {/* 信息层 */}
+        <div
           style={{
             position: 'absolute',
             top: '48px',
@@ -235,160 +230,31 @@ export function VariantEcho() {
             flexDirection: 'column',
             alignItems: 'center',
             gap: '8px',
+            opacity: 0.5,
           }}
         >
           <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#C5A059' }} />
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '18px',
-                fontWeight: 500,
-                letterSpacing: '0.3em',
-                color: '#333',
-                mixBlendMode: 'multiply',
-              }}
-            >
-              张晨曦
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                letterSpacing: '0.2em',
-                color: '#555',
-                textTransform: 'uppercase',
-              }}
-            >
-              Nature Chen
-            </span>
-          </div>
-          <span
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '10px',
-              letterSpacing: '0.15em',
-              color: '#777',
-              marginTop: '4px',
-            }}
-          >
-            Genesis Architect / PM
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.3em', color: '#444', textTransform: 'uppercase' }}>
+            Nature Chen
           </span>
-        </motion.div>
+        </div>
 
-        {/* === 信息层：底部 - 状态 & 联系 === */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+        <div
           style={{
             position: 'absolute',
             bottom: '48px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '12px',
+            gap: '8px',
+            opacity: 0.5,
           }}
         >
-          {/* 状态 */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '11px',
-                letterSpacing: '0.1em',
-                color: '#555',
-              }}
-            >
-              Building{' '}
-              <a
-                href="https://wowok.net"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: '#C5A059',
-                  textDecoration: 'none',
-                  borderBottom: '1px solid transparent',
-                  transition: 'border-color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = '#C5A059')}
-                onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
-              >
-                @Wowok.net
-              </a>
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '10px',
-                letterSpacing: '0.1em',
-                color: '#888',
-              }}
-            >
-              北京 · 大四 → NEU 26 Fall
-            </span>
-          </div>
-
-          {/* 联系方式 */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-              marginTop: '4px',
-            }}
-          >
-            <a
-              href="mailto:nature@example.com"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '9px',
-                letterSpacing: '0.1em',
-                color: '#999',
-                textDecoration: 'none',
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#C5A059')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
-            >
-              EMAIL
-            </a>
-            <span style={{ color: '#ccc', fontSize: '8px' }}>·</span>
-            <a
-              href="#"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '9px',
-                letterSpacing: '0.1em',
-                color: '#999',
-                textDecoration: 'none',
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#C5A059')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
-            >
-              WECHAT
-            </a>
-            <span style={{ color: '#ccc', fontSize: '8px' }}>·</span>
-            <a
-              href="#"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '9px',
-                letterSpacing: '0.1em',
-                color: '#999',
-                textDecoration: 'none',
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#C5A059')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#999')}
-            >
-              TELEGRAM
-            </a>
-          </div>
-
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#C5A059', marginTop: '4px' }} />
-        </motion.div>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.3em', color: '#444', textTransform: 'uppercase' }}>
+            Genesis Architect
+          </span>
+          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#C5A059' }} />
+        </div>
       </div>
     </div>
   );
