@@ -294,4 +294,38 @@
     width: 56px;
     height: 56px;
   }
+
+  .breadcrumb {
+    top: 16px;
+    left: 16px;
+  }
+}
+
+/* === 面包屑导航 === */
+.breadcrumb {
+  position: fixed;
+  top: 32px;
+  left: 32px;
+  z-index: 10;
+}
+
+.breadcrumbLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  color: var(--page-text-light);
+  text-decoration: none;
+  border: 1px solid var(--page-text-lighter);
+  border-radius: 50%;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  opacity: 1;
+  color: var(--page-accent);
+  border-color: var(--page-accent);
 }

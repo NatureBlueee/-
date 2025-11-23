@@ -11,6 +11,7 @@ import { CustomCursor } from '@/components/common/CustomCursor';
 import { MysticalWatermark } from './MysticalWatermark';
 import { NatureSeal } from './NatureSeal';
 import { ArticleContent } from './ArticleContent';
+import { Breadcrumb } from './Breadcrumb';
 import styles from './styles.module.css';
 
 interface ArticleDetailProps {
@@ -29,6 +30,9 @@ export function ArticleDetail({ article }: ArticleDetailProps) {
 
       {/* 神秘水印 */}
       <MysticalWatermark theme={theme} />
+
+      {/* 返回导航 */}
+      <Breadcrumb />
 
       <article className={styles.article}>
         {/* 文章头部 */}

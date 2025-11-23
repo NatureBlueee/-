@@ -386,7 +386,9 @@ body.hovering .custom-cursor {
   min-height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
-  position: relative;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
 }
 
 /* 表世界主题（默认） */
