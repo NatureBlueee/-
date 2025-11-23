@@ -11,45 +11,38 @@ import { motion } from 'framer-motion';
 
 export function VariantEcho() {
   return (
-    <div
-      style={{
-        position: 'absolute',
-        inset: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}
-    >
-      {/* === 背景层：水墨双蛇 === */}
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
+      {/* === 背景层：水墨双蛇 (Ink Wash Caduceus) === */}
       <svg
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          mixBlendMode: 'multiply',
-          opacity: 0.15,
-        }}
+        className="absolute inset-0 w-full h-full pointer-events-none"
         viewBox="0 0 400 800"
         preserveAspectRatio="xMidYMid meet"
+        style={{ mixBlendMode: 'multiply', opacity: 0.15 }}
       >
         <defs>
+          {/* 水墨晕染滤镜 - 没骨画法 */}
           <filter id="ink-wash-echo" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
             <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="4" result="noise" />
             <feDisplacementMap in="blur" in2="noise" scale="30" xChannelSelector="R" yChannelSelector="G" />
           </filter>
+
+          {/* 烟雾流动滤镜 */}
           <filter id="smoke-flow-echo" x="-50%" y="-50%" width="200%" height="200%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise">
+              <animate
+                attributeName="baseFrequency"
+                values="0.015;0.02;0.015"
+                dur="20s"
+                repeatCount="indefinite"
+              />
+            </feTurbulence>
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" />
             <feGaussianBlur stdDeviation="4" />
           </filter>
         </defs>
 
-        {/* 左蛇 */}
+        {/* 左蛇 - 浓墨 */}
         <motion.path
           initial={{ pathLength: 0, opacity: 0 }}
           whileInView={{ pathLength: 1, opacity: 0.7 }}
@@ -61,6 +54,8 @@ export function VariantEcho() {
           filter="url(#ink-wash-echo)"
           strokeLinecap="round"
         />
+
+        {/* 左蛇 - 淡墨晕染层 */}
         <motion.path
           initial={{ pathLength: 0, opacity: 0 }}
           whileInView={{ pathLength: 1, opacity: 0.4 }}
@@ -73,7 +68,7 @@ export function VariantEcho() {
           strokeLinecap="round"
         />
 
-        {/* 右蛇 */}
+        {/* 右蛇 - 浓墨 */}
         <motion.path
           initial={{ pathLength: 0, opacity: 0 }}
           whileInView={{ pathLength: 1, opacity: 0.7 }}
@@ -85,6 +80,8 @@ export function VariantEcho() {
           filter="url(#ink-wash-echo)"
           strokeLinecap="round"
         />
+
+        {/* 右蛇 - 淡墨晕染层 */}
         <motion.path
           initial={{ pathLength: 0, opacity: 0 }}
           whileInView={{ pathLength: 1, opacity: 0.3 }}
@@ -98,20 +95,10 @@ export function VariantEcho() {
         />
       </svg>
 
-      {/* === 内容层 === */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          height: '100%',
-        }}
-      >
-        {/* 上虚影 */}
+      {/* === 内容层：重影与实体 === */}
+      <div className="z-10 flex flex-col items-center justify-center h-full relative w-full">
+
+        {/* 1. 上虚影：创造 (Echo Past) */}
         <motion.div
           animate={{
             y: [-8, 8, -8],
@@ -119,20 +106,19 @@ export function VariantEcho() {
             filter: ["blur(3px)", "blur(1.5px)", "blur(3px)"]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute select-none"
           style={{
-            position: 'absolute',
             top: '18%',
             fontFamily: 'var(--font-serif)',
             fontSize: '48px',
             color: '#555',
-            mixBlendMode: 'multiply',
-            userSelect: 'none',
+            mixBlendMode: 'multiply'
           }}
         >
           创造
         </motion.div>
 
-        {/* 下虚影 */}
+        {/* 2. 下虚影：创造 (Echo Future) */}
         <motion.div
           animate={{
             y: [8, -8, 8],
@@ -140,21 +126,20 @@ export function VariantEcho() {
             filter: ["blur(3px)", "blur(1.5px)", "blur(3px)"]
           }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute select-none"
           style={{
-            position: 'absolute',
             bottom: '18%',
             fontFamily: 'var(--font-serif)',
             fontSize: '48px',
             color: '#555',
-            mixBlendMode: 'multiply',
-            userSelect: 'none',
+            mixBlendMode: 'multiply'
           }}
         >
           创造
         </motion.div>
 
-        {/* 核心：爱 */}
-        <div style={{ position: 'relative' }}>
+        {/* 3. 核心实体：爱 (The Solid Core) */}
+        <div className="relative">
           <motion.div
             initial={{ scale: 0.8, opacity: 0, filter: 'blur(10px)' }}
             whileInView={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
@@ -166,24 +151,15 @@ export function VariantEcho() {
               fontWeight: 300,
               color: '#111',
               letterSpacing: '0.05em',
-              mixBlendMode: 'multiply',
+              mixBlendMode: 'multiply'
             }}
           >
             爱
           </motion.div>
 
-          {/* 金缮 */}
+          {/* 金缮修复 (Kintsugi) - 锐利的金线 */}
           <svg
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              pointerEvents: 'none',
-              overflow: 'visible',
-              zIndex: 20,
-            }}
+            className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-visible z-20"
             viewBox="0 0 100 100"
           >
             <defs>
@@ -204,6 +180,7 @@ export function VariantEcho() {
               strokeLinejoin="round"
               filter="url(#gold-glow-echo)"
             />
+            {/* 金粉散落 */}
             <motion.circle
               cx="35" cy="40" r="1.2"
               fill="#C5A059"
@@ -221,39 +198,37 @@ export function VariantEcho() {
           </svg>
         </div>
 
-        {/* 信息层 */}
+        {/* 4. 信息层：极简标注 */}
         <div
-          style={{
-            position: 'absolute',
-            top: '48px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '8px',
-            opacity: 0.5,
-          }}
+          className="absolute flex flex-col items-center gap-2"
+          style={{ top: '48px', opacity: 0.5 }}
         >
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#C5A059' }} />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.3em', color: '#444', textTransform: 'uppercase' }}>
+          <div
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: '#C5A059' }}
+          />
+          <span
+            className="text-[10px] tracking-[0.3em] uppercase"
+            style={{ fontFamily: 'var(--font-mono)', color: '#444' }}
+          >
             Nature Chen
           </span>
         </div>
 
         <div
-          style={{
-            position: 'absolute',
-            bottom: '48px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '8px',
-            opacity: 0.5,
-          }}
+          className="absolute flex flex-col items-center gap-2"
+          style={{ bottom: '48px', opacity: 0.5 }}
         >
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.3em', color: '#444', textTransform: 'uppercase' }}>
+          <span
+            className="text-[10px] tracking-[0.3em] uppercase"
+            style={{ fontFamily: 'var(--font-mono)', color: '#444' }}
+          >
             Genesis Architect
           </span>
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#C5A059' }} />
+          <div
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ backgroundColor: '#C5A059' }}
+          />
         </div>
       </div>
     </div>
