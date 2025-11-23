@@ -116,38 +116,71 @@ export async function getArticlesByCategory(
   category: '理性' | '感性'
 ): Promise<Article[]> {
   if (!DATABASE_ID) {
+    console.warn('[Notion] DATABASE_ID 未配置');
     return [];
   }
 
   try {
+    // 先尝试获取数据库信息，验证连接和属性
+    const dbInfo = await notion.databases.retrieve({ database_id: DATABASE_ID });
+    const props = Object.keys(dbInfo.properties);
+
+    // 检查必要属性是否存在
+    const requiredProps = ['状态', '类型', '发布日期', '标题'];
+    const missingProps = requiredProps.filter(p => !props.includes(p));
+
+    if (missingProps.length > 0) {
+      console.warn(`[Notion] 数据库缺少属性: ${missingProps.join(', ')}`);
+      console.warn(`[Notion] 当前数据库属性: ${props.join(', ')}`);
+      // 继续执行，不使用过滤器
+    }
+
+    // 构建过滤器（仅当属性存在时）
+    const hasStatus = props.includes('状态');
+    const hasCategory = props.includes('类型');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let filter: any = undefined;
+
+    if (hasStatus && hasCategory) {
+      filter = {
+        and: [
+          { property: '状态', select: { equals: '已发布' } },
+          { property: '类型', select: { equals: category } },
+        ],
+      };
+    } else if (hasCategory) {
+      filter = { property: '类型', select: { equals: category } };
+    }
+
     const response = await notion.databases.query({
       database_id: DATABASE_ID,
-      filter: {
-        and: [
-          {
-            property: '状态',
-            select: { equals: '已发布' },
-          },
-          {
-            property: '类型',
-            select: { equals: category },
-          },
-        ],
-      },
-      sorts: [
-        {
-          property: '发布日期',
-          direction: 'descending',
-        },
-      ],
+      filter,
+      sorts: props.includes('发布日期')
+        ? [{ property: '发布日期', direction: 'descending' }]
+        : undefined,
     });
 
-    return response.results
+    const articles = response.results
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .filter((page: any) => 'properties' in page)
-      .map(transformPageToArticle);
+      .map(transformPageToArticle)
+      // 如果没有类型属性，在代码层面过滤
+      .filter((a: Article) => !hasCategory || a.category === category);
+
+    console.log(`[Notion] 获取到 ${articles.length} 篇 ${category} 文章`);
+    return articles;
   } catch (error) {
-    console.warn(`Failed to fetch ${category} articles:`, error);
+    // 更详细的错误信息
+    const err = error as Error & { code?: string; status?: number };
+    console.error(`[Notion] 获取 ${category} 文章失败:`);
+    console.error(`  - 错误: ${err.message}`);
+    if (err.code) console.error(`  - 代码: ${err.code}`);
+    if (err.status) console.error(`  - 状态: ${err.status}`);
+
+    if (err.code === 'object_not_found') {
+      console.error('  - 提示: 请确认 Integration 已连接到数据库');
+    }
     return [];
   }
 }
