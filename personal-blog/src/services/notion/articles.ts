@@ -8,13 +8,10 @@ import { Client } from '@notionhq/client';
 
 /**
  * Notion 客户端
- *
- * 类型断言用于解决 TypeScript 严格模式下的类型推断问题
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
-}) as any;
+});
 
 const DATABASE_ID = process.env.NOTION_DATABASE_ID || '';
 
