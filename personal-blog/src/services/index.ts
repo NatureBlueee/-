@@ -8,6 +8,8 @@ export {
   getArticles,
   getArticlesByCategory,
   getArticleById,
+  getArticleByIdAndLanguage,
+  getRelatedArticle,
   getAllArticleIds,
   type Article,
 } from './notion';

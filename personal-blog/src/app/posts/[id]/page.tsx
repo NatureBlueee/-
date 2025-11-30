@@ -7,6 +7,9 @@
  * 架构原则：
  * - 页面只负责数据层和 Next.js 特性（metadata, generateStaticParams）
  * - UI 渲染由组件负责，便于独立修改视觉层
+ *
+ * 使用 ISR 静态生成，每 24 小时自动刷新
+ * 配合 VersionChecker 实现智能更新检测
  */
 
 import type { Metadata } from 'next';
@@ -14,6 +17,10 @@ import { notFound } from 'next/navigation';
 import { getArticleById, getAllArticleIds } from '@/services';
 import { ArticleDetail } from '@/components/article';
 import { siteConfig } from '@/config/site';
+import { VersionChecker } from '@/components/common/VersionChecker';
+
+// ISR: 每 86400 秒（24小时）后台刷新
+export const revalidate = 86400;
 
 interface ArticlePageProps {
   params: Promise<{ id: string }>;
@@ -70,5 +77,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  return <ArticleDetail article={article} />;
+  return (
+    <>
+      {/* 版本检测：自动检测 Notion 是否有更新 */}
+      <VersionChecker />
+      <ArticleDetail article={article} />
+    </>
+  );
 }

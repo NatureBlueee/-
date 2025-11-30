@@ -5,7 +5,7 @@
  * 设计：舒适的阅读体验，思源宋体
  */
 
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 
 interface ArticleContentProps {
   content: string;
@@ -13,7 +13,6 @@ interface ArticleContentProps {
 
 export function ArticleContent({ content }: ArticleContentProps) {
   // 简单的 Markdown 到 HTML 转换
-  // 未来可以替换为 MDX 或更完整的 Markdown 解析器
   const htmlContent = markdownToHtml(content);
 
   return (
@@ -31,45 +30,130 @@ export function ArticleContent({ content }: ArticleContentProps) {
  * 设计原则：够用就好，保持简单
  */
 function markdownToHtml(markdown: string): string {
-  if (!markdown) return '';
+  if (!markdown) return "";
 
-  return markdown
-    // 代码块
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+  // 先处理代码块，避免内部内容被其他规则影响
+  const codeBlocks: string[] = [];
+  let processed = markdown.replace(
+    /```(\w*)\n([\s\S]*?)```/g,
+    (_, lang, code) => {
+      codeBlocks.push(
+        `<pre><code class="language-${lang}">${escapeHtml(code)}</code></pre>`
+      );
+      return `__CODE_BLOCK_${codeBlocks.length - 1}__`;
+    }
+  );
+
+  // 处理列表（需要特殊处理以支持多行）
+  processed = processLists(processed);
+
+  // 其他 Markdown 转换
+  processed = processed
     // 行内代码
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
     // 标题
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    // 引用
-    .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-    // 无序列表
-    .replace(/^- (.+)$/gm, '<li>$1</li>')
-    // 有序列表
-    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+    .replace(/^### (.+)$/gm, "<h3>$1</h3>")
+    .replace(/^## (.+)$/gm, "<h2>$1</h2>")
+    .replace(/^# (.+)$/gm, "<h1>$1</h1>")
+    // 引用（支持多行）
+    .replace(/^> (.+)$/gm, "<blockquote>$1</blockquote>")
     // 分隔线
-    .replace(/^---$/gm, '<hr />')
+    .replace(/^---$/gm, "<hr />")
     // 粗体
-    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     // 斜体
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-    // 段落 (双换行)
-    .replace(/\n\n/g, '</p><p>')
-    // 单换行
-    .replace(/\n/g, '<br />')
-    // 包裹整个内容
-    .replace(/^([\s\S]+)$/, '<p>$1</p>')
-    // 清理多余的空 p 标签
-    .replace(/<p><\/p>/g, '')
-    .replace(/<p>(<h[123]>)/g, '$1')
-    .replace(/(<\/h[123]>)<\/p>/g, '$1')
-    .replace(/<p>(<blockquote>)/g, '$1')
-    .replace(/(<\/blockquote>)<\/p>/g, '$1')
-    .replace(/<p>(<pre>)/g, '$1')
-    .replace(/(<\/pre>)<\/p>/g, '$1')
-    .replace(/<p>(<hr \/>)/g, '$1')
-    .replace(/(<hr \/>)<\/p>/g, '$1')
-    .replace(/<p>(<li>)/g, '<ul>$1')
-    .replace(/(<\/li>)<\/p>/g, '$1</ul>');
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    // 链接
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+  // 处理段落
+  processed = processParagraphs(processed);
+
+  // 恢复代码块
+  codeBlocks.forEach((block, i) => {
+    processed = processed.replace(`__CODE_BLOCK_${i}__`, block);
+  });
+
+  // 合并相邻的 blockquote
+  processed = processed.replace(/<\/blockquote>\s*<blockquote>/g, "<br />");
+
+  return processed;
+}
+
+/**
+ * 处理列表
+ */
+function processLists(text: string): string {
+  // 无序列表
+  text = text.replace(/(?:^|\n)((?:- .+\n?)+)/g, (_, items) => {
+    const listItems = items
+      .trim()
+      .split("\n")
+      .map((item: string) => {
+        const content = item.replace(/^- /, "").trim();
+        return `<li>${content}</li>`;
+      })
+      .join("");
+    return `\n<ul>${listItems}</ul>\n`;
+  });
+
+  // 有序列表
+  text = text.replace(/(?:^|\n)((?:\d+\. .+\n?)+)/g, (_, items) => {
+    const listItems = items
+      .trim()
+      .split("\n")
+      .map((item: string) => {
+        const content = item.replace(/^\d+\. /, "").trim();
+        return `<li>${content}</li>`;
+      })
+      .join("");
+    return `\n<ol>${listItems}</ol>\n`;
+  });
+
+  return text;
+}
+
+/**
+ * 处理段落
+ */
+function processParagraphs(text: string): string {
+  // 按双换行分割
+  const blocks = text.split(/\n\n+/);
+
+  return blocks
+    .map((block) => {
+      block = block.trim();
+      if (!block) return "";
+
+      // 如果已经是 HTML 标签，不包裹
+      if (
+        block.startsWith("<h") ||
+        block.startsWith("<ul") ||
+        block.startsWith("<ol") ||
+        block.startsWith("<blockquote") ||
+        block.startsWith("<pre") ||
+        block.startsWith("<hr") ||
+        block.startsWith("__CODE_BLOCK")
+      ) {
+        return block;
+      }
+
+      // 处理段落内的换行
+      block = block.replace(/\n/g, "<br />");
+
+      return `<p>${block}</p>`;
+    })
+    .join("\n");
+}
+
+/**
+ * 转义 HTML 特殊字符
+ */
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

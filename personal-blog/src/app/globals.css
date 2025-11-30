@@ -28,6 +28,41 @@
   /* 新增变量 */
   --bg-silk: #e6e4d5;
   --gold-mud: #c5a059;
+
+  /* === 优化变量：表世界 === */
+  --grid-color: rgba(0, 0, 0, 0.03); /* 极淡的网格色 */
+}
+
+/* === 优化工具类：不可见之网 (Invisible Grid) === */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  /* 仅在左侧留白区显示，无需额外定位 */
+}
+
+/* === 优化工具类：金石气排印 (Architectural Typography) === */
+.text-architectural {
+  letter-spacing: 0.8em; /* 极宽字距 */
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.2); /* 墨晕效果 */
+  font-weight: 600; /* 稍重，如碑刻 */
+}
+
+/* === 优化动画：朱砂呼吸 (Cinnabar Pulse) === */
+@keyframes pulse-cinnabar {
+  0%, 100% {
+    opacity: 0.8;
+    height: 60px; /* 原始高度 */
+  }
+  50% {
+    opacity: 1;
+    height: 65px; /* 微弱伸长 */
+  }
+}
+
+.animate-pulse-cinnabar {
+  animation: pulse-cinnabar 4s ease-in-out infinite;
 }
 
 /* === 基础重置 === */
@@ -41,13 +76,28 @@
 
 html {
   height: 100%;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   scroll-behavior: smooth;
 }
 
 body {
   height: 100%;
-  overflow: visible;
+  overflow-x: hidden;
+  overflow-y: visible;
+  max-width: 100vw;
+}
+
+/* 隐藏全局滚动条但保持滚动功能 */
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
 body {
@@ -101,6 +151,7 @@ body.hovering .custom-cursor {
   height: 100vh;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
 }
 
 /* === 每一屏 === */
@@ -108,6 +159,7 @@ body.hovering .custom-cursor {
   height: 100vh;
   width: 100vw;
   position: relative;
+  scroll-snap-align: start;
   overflow: hidden;
   display: flex;
 }
@@ -175,7 +227,7 @@ body.hovering .custom-cursor {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* 右侧：内容流 */
@@ -186,6 +238,7 @@ body.hovering .custom-cursor {
   padding: 8rem 3rem 8rem 4rem;
   position: relative;
   scrollbar-width: none;
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .content-area::-webkit-scrollbar {
@@ -201,6 +254,7 @@ body.hovering .custom-cursor {
   width: 1px;
   background-color: var(--border-line);
   z-index: 10;
+  transition: left 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* 朱砂红点睛 */
@@ -213,6 +267,7 @@ body.hovering .custom-cursor {
   background-color: var(--cinnabar);
   z-index: 12;
   transform: translateX(-1px);
+  transition: left 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* === Logo === */
@@ -294,6 +349,25 @@ body.hovering .custom-cursor {
   100% {
     transform: translateX(-10px) scale(1.2) skewX(-1deg);
     opacity: 0.5;
+  }
+}
+
+/* 微调版烟雾上升动画 */
+@keyframes smokeRise1 {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes smokeRise2 {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0%);
   }
 }
 
