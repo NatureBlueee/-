@@ -4,14 +4,14 @@
  * 展示所有已发布的文章
  */
 
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { getArticles } from '@/services';
-import { siteConfig } from '@/config/site';
-import styles from './page.module.css';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { getArticles } from "@/services";
+import { siteConfig } from "@/config/site";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
-  title: '文章',
+  title: "文章",
   description: `${siteConfig.author.name} 的文章列表`,
 };
 
@@ -36,9 +36,6 @@ export default async function PostsPage() {
               <Link href={`/posts/${article.id}`} className={styles.link}>
                 <span className={styles.category}>{article.category}</span>
                 <h2 className={styles.articleTitle}>{article.title}</h2>
-                {article.titleEn && (
-                  <p className={styles.titleEn}>{article.titleEn}</p>
-                )}
                 <time className={styles.date}>{article.publishedAt}</time>
               </Link>
             </li>
