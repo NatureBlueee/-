@@ -8,15 +8,24 @@
 import { Client } from "@notionhq/client";
 import { NextResponse } from "next/server";
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
+const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const DATABASE_ID = process.env.NOTION_DATABASE_ID!;
 
 export async function GET() {
   try {
     const db = await notion.databases.retrieve({ database_id: DATABASE_ID });
 
+    // 检查是否是完整的数据库响应（包含 last_edited_time）
+    if ("last_edited_time" in db) {
+      return NextResponse.json({
+        version: db.last_edited_time,
+        success: true,
+      });
+    }
+
+    // 如果是部分响应，返回当前时间作为版本
     return NextResponse.json({
-      version: db.last_edited_time,
+      version: new Date().toISOString(),
       success: true,
     });
   } catch (error) {
@@ -30,4 +39,3 @@ export async function GET() {
     );
   }
 }
-
