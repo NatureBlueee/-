@@ -41,7 +41,7 @@ export function ArticleEntry({
   index,
   variant,
   isExpanded = false,
-  isListExpanded = false,
+  isListExpanded: _isListExpanded = false,
   onExpand,
 }: ArticleEntryProps) {
   const isSurface = variant === "surface";
@@ -50,9 +50,10 @@ export function ArticleEntry({
 
   // 保留参数以兼容
   void index;
+  void _isListExpanded;
 
-  // 是否显示摘要（完整或虚化）
-  const showExcerpt = (isExpanded || isListExpanded) && article.excerpt;
+  // 始终显示摘要（有摘要的情况下）
+  const showExcerpt = !!article.excerpt;
 
   /**
    * 处理标题点击
@@ -110,93 +111,93 @@ export function ArticleEntry({
         {article.title}
       </h2>
 
-      {/* 摘要区域 - 用同一个 div，通过样式变化实现展开效果 */}
-      <AnimatePresence>
-        {showExcerpt && (
-          <motion.div
-            key="excerpt"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{
-              duration: 0.5,
-              ease: [0.22, 1, 0.36, 1],
+      {/* 摘要区域 - 始终显示，通过样式变化实现展开效果 */}
+      {showExcerpt && (
+        <motion.div
+          key="excerpt"
+          initial={false}
+          animate={{
+            height: "auto",
+            marginBottom: isExpanded ? "0" : "1rem",
+          }}
+          transition={{
+            duration: 0.4,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          style={{ overflow: "hidden" }}
+        >
+          {/* 摘要文本 - 根据是否选中展示不同样式 */}
+          {/* 点击虚化摘要也能展开 */}
+          <motion.p
+            onClick={() => !isExpanded && onExpand?.(article.id)}
+            initial={false}
+            animate={{
+              opacity: isExpanded ? (isSurface ? 1 : 0.85) : 0.4,
+              filter: isExpanded ? "blur(0px)" : "blur(0.8px)",
             }}
-            style={{ overflow: "hidden" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            style={{
+              fontSize: isExpanded ? "0.85rem" : "0.8rem",
+              color: isSurface ? "#555" : "#8FAAB0",
+              lineHeight: 1.9,
+              textAlign: "justify",
+              marginBottom: isExpanded ? "1.5rem" : "0.5rem",
+              // 虚化预览时的样式
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: isExpanded ? "unset" : 1,
+              overflow: "hidden",
+              // 渐变遮罩（虚化时）
+              maskImage: isExpanded
+                ? "none"
+                : "linear-gradient(to right, black 60%, transparent 95%)",
+              WebkitMaskImage: isExpanded
+                ? "none"
+                : "linear-gradient(to right, black 60%, transparent 95%)",
+              // 虚化时显示可点击
+              cursor: isExpanded ? "default" : "pointer",
+            }}
           >
-            {/* 摘要文本 - 根据是否选中展示不同样式 */}
-            {/* 点击虚化摘要也能展开 */}
-            <motion.p
-              onClick={() => !isExpanded && onExpand?.(article.id)}
-              animate={{
-                // 选中时：完整显示；否则：一行虚化
-                WebkitLineClamp: isExpanded ? "unset" : 1,
-                opacity: isExpanded ? (isSurface ? 1 : 0.85) : 0.5,
-                filter: isExpanded ? "blur(0px)" : "blur(0.5px)",
-              }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              style={{
-                fontSize: isExpanded ? "0.85rem" : "0.8rem",
-                color: isSurface ? "#555" : "#8FAAB0",
-                lineHeight: 1.9,
-                textAlign: "justify",
-                marginBottom: isExpanded ? "1.5rem" : "1rem",
-                // 虚化预览时的样式
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                // 渐变遮罩（虚化时）
-                maskImage: isExpanded
-                  ? "none"
-                  : "linear-gradient(to right, black 70%, transparent 100%)",
-                WebkitMaskImage: isExpanded
-                  ? "none"
-                  : "linear-gradient(to right, black 70%, transparent 100%)",
-                // 虚化时显示可点击
-                cursor: isExpanded ? "default" : "pointer",
-              }}
-            >
-              {article.excerpt}
-            </motion.p>
+            {article.excerpt}
+          </motion.p>
 
-            {/* 阅读全文链接 - 只在完全展开时显示 */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+          {/* 阅读全文链接 - 只在完全展开时显示 */}
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  overflow: "hidden",
+                }}
+              >
+                <button
+                  onClick={() => router.push(`/posts/${article.id}`)}
+                  className="hover-target"
                   style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    overflow: "hidden",
+                    background: "none",
+                    border: "none",
+                    padding: "8px 16px",
+                    fontSize: "12px",
+                    fontFamily: "var(--font-mono)",
+                    color: isSurface ? "#666" : "#C7B396",
+                    cursor: "pointer",
+                    opacity: 0.8,
+                    transition: "opacity 0.2s ease",
+                    letterSpacing: "0.05em",
                   }}
                 >
-                  <button
-                    onClick={() => router.push(`/posts/${article.id}`)}
-                    className="hover-target"
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: "8px 16px",
-                      fontSize: "12px",
-                      fontFamily: "var(--font-mono)",
-                      color: isSurface ? "#666" : "#C7B396",
-                      cursor: "pointer",
-                      opacity: 0.8,
-                      transition: "opacity 0.2s ease",
-                      letterSpacing: "0.05em",
-                    }}
-                  >
-                    {t("阅读全文 →", "Read more →")}
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  {t("阅读全文 →", "Read more →")}
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
     </article>
   );
 }

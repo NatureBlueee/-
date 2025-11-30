@@ -7,7 +7,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import styles from './styles.module.css';
 
 interface MysticalWatermarkProps {
@@ -49,19 +49,30 @@ const SYMBOLS = {
 
 const SYMBOL_KEYS = Object.keys(SYMBOLS) as (keyof typeof SYMBOLS)[];
 
-export function MysticalWatermark({ theme }: MysticalWatermarkProps) {
-  // 使用 useState 和 useEffect 确保只在客户端生成随机值，避免 hydration mismatch
-  const [symbolKey, setSymbolKey] = useState<keyof typeof SYMBOLS>('sol');
-  const [position, setPosition] = useState({ bottom: 17.5, right: 10 });
+// 简单的伪随机生成器，基于时间戳生成稳定的随机值
+function getStableRandom(seed: number): number {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
 
-  useEffect(() => {
-    // 只在客户端挂载后生成随机值
-    const index = Math.floor(Math.random() * SYMBOL_KEYS.length);
-    setSymbolKey(SYMBOL_KEYS[index] ?? 'sol');
-    setPosition({
-      bottom: 10 + Math.random() * 15,
-      right: 5 + Math.random() * 10,
-    });
+export function MysticalWatermark({ theme }: MysticalWatermarkProps) {
+  // 使用 useMemo 生成稳定的随机值，避免 hydration mismatch
+  // 服务端和客户端都使用相同的默认值
+  const { symbolKey, position } = useMemo(() => {
+    // 使用组件挂载时的时间戳作为种子（仅在客户端有效）
+    const seed = typeof window !== 'undefined' ? Date.now() : 0;
+    const random1 = getStableRandom(seed);
+    const random2 = getStableRandom(seed + 1);
+    const random3 = getStableRandom(seed + 2);
+    
+    const index = Math.floor(random1 * SYMBOL_KEYS.length);
+    return {
+      symbolKey: SYMBOL_KEYS[index] ?? 'sol',
+      position: {
+        bottom: 10 + random2 * 15,
+        right: 5 + random3 * 10,
+      },
+    };
   }, []);
 
   const path = SYMBOLS[symbolKey];

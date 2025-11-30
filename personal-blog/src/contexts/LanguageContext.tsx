@@ -11,8 +11,8 @@ import {
   createContext,
   useContext,
   useState,
-  useEffect,
   useCallback,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
@@ -35,23 +35,41 @@ interface LanguageProviderProps {
   children: ReactNode;
 }
 
-export function LanguageProvider({ children }: LanguageProviderProps) {
-  const [language, setLanguageState] = useState<Language>("zh");
-  const [isHydrated, setIsHydrated] = useState(false);
+// 从 localStorage 获取语言
+function getStoredLanguage(): Language {
+  if (typeof window === "undefined") return "zh";
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored === "zh" || stored === "en") return stored;
+  return "zh";
+}
 
-  // 从 localStorage 恢复语言偏好
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-    if (stored && (stored === "zh" || stored === "en")) {
-      setLanguageState(stored);
-    }
-    setIsHydrated(true);
-  }, []);
+// 订阅 storage 事件
+function subscribeToStorage(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
+
+// 服务端快照
+function getServerSnapshot(): Language {
+  return "zh";
+}
+
+export function LanguageProvider({ children }: LanguageProviderProps) {
+  // 使用 useSyncExternalStore 来安全地从 localStorage 读取
+  const storedLanguage = useSyncExternalStore(
+    subscribeToStorage,
+    getStoredLanguage,
+    getServerSnapshot
+  );
+
+  const [language, setLanguageState] = useState<Language>(storedLanguage);
 
   // 设置语言并持久化
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem(STORAGE_KEY, lang);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, lang);
+    }
   }, []);
 
   // 切换语言
@@ -66,22 +84,6 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     },
     [language]
   );
-
-  // 避免 hydration mismatch
-  if (!isHydrated) {
-    return (
-      <LanguageContext.Provider
-        value={{
-          language: "zh",
-          setLanguage: () => {},
-          toggleLanguage: () => {},
-          t: (zh) => zh,
-        }}
-      >
-        {children}
-      </LanguageContext.Provider>
-    );
-  }
 
   return (
     <LanguageContext.Provider
@@ -102,4 +104,3 @@ export function useLanguage() {
   }
   return context;
 }
-
